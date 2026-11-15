@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A little surprise.">
+  <meta property="og:title" content="A little surprise">
+  <meta property="og:description" content="Open when you're ready.">
+  <meta name="theme-color" content="#071426">
+  <title>A little surprise</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      min-height: 100vh; overflow: hidden; display: grid; place-items: center;
+      color: white; font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(ellipse at 50% 35%, #19395b 0%, #0b1d34 48%, #030914 100%);
+    }
+    .stage { position: relative; z-index: 2; width: min(1000px, 92vw); text-align: center; padding: 2rem 1rem; }
+    .hint { color: #b9cde4; letter-spacing: .28em; font-size: .75rem; text-transform: uppercase; margin-bottom: 2rem; }
+    button {
+      border: 1px solid #b7d9ff; color: #fff; background: rgba(255,255,255,.08);
+      border-radius: 999px; padding: 1rem 2rem; font-size: 1rem; letter-spacing: .12em;
+      text-transform: uppercase; cursor: pointer; transition: .25s ease;
+      box-shadow: 0 0 24px rgba(128,190,255,.12);
+    }
+    button:hover { background: rgba(255,255,255,.18); transform: translateY(-2px); }
+    h1 {
+      margin: 0; font-weight: 1000; line-height: .98; letter-spacing: -.045em;
+      font-size: clamp(3.2rem, 11vw, 8.5rem);
+      opacity: 0; transform: scale(.65) rotateX(70deg); filter: blur(16px);
+      text-shadow: 0 0 18px rgba(161,218,255,.6), 0 0 55px rgba(72,157,255,.5);
+    }
+    h1 span { display: block; }
+    .show h1 { animation: reveal 1.15s cubic-bezier(.16,1,.3,1) forwards; }
+    .show h1 span:nth-child(2) { animation-delay: .22s; }
+    .show h1 span:nth-child(3) { animation-delay: .44s; }
+    @keyframes reveal {
+      to { opacity: 1; transform: scale(1) rotateX(0); filter: blur(0); }
+    }
+    .snow { position: fixed; inset: -10vh 0 0; pointer-events: none; z-index: 1; }
+    .flake {
+      position: absolute; top: -8vh; color: white; opacity: .8;
+      animation: fall linear infinite; user-select: none;
+      text-shadow: 0 0 8px rgba(255,255,255,.65);
+    }
+    @keyframes fall { to { transform: translate3d(8vw, 115vh, 0) rotate(360deg); } }
+    .show .hint, .show button { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="snow" aria-hidden="true" id="snow"></div>
+  <main class="stage" id="stage">
+    <div class="hint">You've got a surprise</div>
+    <button id="reveal" type="button">Tap to reveal</button>
+    <h1 aria-live="polite">
+      <span>IT SNOWS</span>
+      <span>IN</span>
+      <span>FLORIDA</span>
+    </h1>
+  </main>
+  <script>
+    const snow = document.getElementById('snow');
+    for (let i = 0; i < 90; i++) {
+      const flake = document.createElement('span');
+      flake.className = 'flake';
+      flake.textContent = Math.random() > .55 ? '❄' : '•';
+      flake.style.left = Math.random() * 100 + 'vw';
+      flake.style.fontSize = (8 + Math.random() * 18) + 'px';
+      flake.style.animationDuration = (6 + Math.random() * 12) + 's';
+      flake.style.animationDelay = (-Math.random() * 18) + 's';
+      snow.appendChild(flake);
+    }
+    document.getElementById('reveal').addEventListener('click', () => {
+      document.getElementById('stage').classList.add('show');
+    });
+  </script>
+</body>
+</html>
